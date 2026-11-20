@@ -293,7 +293,7 @@ impl<'a> Ex<'a> {
             for (slot, attrs) in border_strokes.iter_mut().zip(&ts.borders) {
                 self.apply_partial_cell_stroke(slot, attrs);
             }
-            let mut row_fills = self.map_alt_fill_attrs(&ts.row_fills);
+            let mut row_fills = craft_idml::model::AlternatingFillValues::default();
             if let Some(a) = &ts.alt_rows {
                 row_fills.first_color = Some(self.sw(&a.first_color));
                 row_fills.first_count = Some(f64::from(a.first));
@@ -302,6 +302,15 @@ impl<'a> Ex<'a> {
                 row_fills.next_count = Some(f64::from(a.next));
                 row_fills.next_tint = Some(f64::from(a.next_tint) * 100.0);
             }
+            let overlay = self.map_alt_fill_attrs(&ts.row_fills);
+            row_fills.first_count = overlay.first_count.or(row_fills.first_count);
+            row_fills.first_color = overlay.first_color.or(row_fills.first_color);
+            row_fills.first_tint = overlay.first_tint.or(row_fills.first_tint);
+            row_fills.next_count = overlay.next_count.or(row_fills.next_count);
+            row_fills.next_color = overlay.next_color.or(row_fills.next_color);
+            row_fills.next_tint = overlay.next_tint.or(row_fills.next_tint);
+            row_fills.skip_first = overlay.skip_first.or(row_fills.skip_first);
+            row_fills.skip_last = overlay.skip_last.or(row_fills.skip_last);
             let based_on = (ts.name != designcraft_doc::NO_TABLE_STYLE).then(|| {
                 let base = ts.based_on.as_deref().unwrap_or(designcraft_doc::NO_TABLE_STYLE);
                 if base == designcraft_doc::NO_TABLE_STYLE {
