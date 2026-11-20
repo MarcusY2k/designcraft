@@ -163,7 +163,7 @@ impl<'a> Ex<'a> {
             weight: Some(s.weight),
             color: Some(self.sw(&s.color)),
             tint: Some(f64::from(s.tint) * 100.0),
-            kind: Some(names::stroke_type_out(&s.kind).into()),
+            kind: Some(names::stroke_type_out(&s.kind)),
             ..craft_idml::model::StrokeValues::default()
         };
         if s.gap_color != designcraft_color::swatch::NONE || s.gap_tint != 1.0 {
@@ -184,7 +184,7 @@ impl<'a> Ex<'a> {
             out.tint = Some(f64::from(value) * 100.0);
         }
         if let Some(value) = &attrs.kind {
-            out.kind = Some(names::stroke_type_out(value).into());
+            out.kind = Some(names::stroke_type_out(value));
         }
         if let Some(value) = &attrs.gap_color {
             out.gap_color = Some(self.sw(value));
@@ -355,7 +355,7 @@ impl<'a> Ex<'a> {
                     style: Some(names::style_name_out(PARA_BUILTINS, &e.style)),
                     level: Some(e.level),
                     page_number_position: Some(position.into()),
-                    separator: Some(names::toc_separator_out(e.separator.as_deref().unwrap_or("\t")).into()),
+                    separator: Some(names::toc_separator_out(e.separator.as_deref().unwrap_or("\t"))),
                     entry_style: Some(para(&format)),
                     page_number_style: Some(chars(e.page_number_style.as_deref())),
                     separator_style: Some(chars(e.separator_style.as_deref())),
