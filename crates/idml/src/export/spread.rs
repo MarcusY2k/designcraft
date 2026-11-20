@@ -96,7 +96,7 @@ pub(super) fn margin_el(pg: &designcraft_doc::Page) -> El {
     // survive the round trip; otherwise the even split, which InDesign writes for unmoved columns.
     let pos = pg.columns.edges(m.width());
     crate::xml::from_craft(craft_idml::model::MarginPreference::to_el(
-        pg.columns.count.max(1),
+        pg.columns.count.max(1) as usize,
         pg.columns.gutter,
         pg.margins.top,
         pg.margins.bottom,
